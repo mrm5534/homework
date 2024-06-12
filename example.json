@@ -1,0 +1,27 @@
+{
+  "firstName": "zhang",
+  "lastName": "san",
+  "age": 30,
+  "email": "zhangsan@example.com",
+  "interests": [
+    "biancheng",
+    "yuedu",
+    "lvxing"
+  ],
+  "address": {
+    "streetAddress": "cxl45h",
+    "city": "wlc",
+    "state": "kjs",
+    "postalCode": "100010"
+  },
+  "phoneNumber": [
+    {
+      "type": "home",
+      "number": "010-12345678"
+    },
+    {
+      "type": "mobile",
+      "number": "13800138000"
+    }
+  ]
+}
