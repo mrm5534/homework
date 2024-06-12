@@ -1,28 +1,43 @@
 import argparse
+from explorer import JSONExplorer
+from style import Style,TreeStyle,RectStyle
 import json
-from builder import JSONBuilder  # 假设builder.py中已经实现了相应逻辑
-from factory import DefaultStyleFactory,TreeStyleFactory,RectangleStyleFactory  # 同样假设factory.py已准备就绪
+from icons import IconFamily, PokerIcons, OtherIcons
+def parse_arguments():
+    parser = argparse.ArgumentParser(description='Funny JSON Explorer')
+    parser.add_argument('-f', '--file', type=str, required=True, help='Path to the JSON file')
+    parser.add_argument('-s', '--style', type=str, required=True, choices=['tree', 'rect'], help='Visualization style (tree or rect)')
+    parser.add_argument('-i', '--icon', type=str, required=True, choices=['poker', 'other'], help='Icon family (poker or other)')
+    return parser.parse_args()
 
-def main(json_file_path, style_factory=DefaultStyleFactory(), icon_family=None):
-    # 假设后续逻辑会使用style_factory和icon_family，这里仅示例
-    with open(json_file_path, 'r', encoding='utf-8') as file:
-        json_data = json.load(file)
-        builder = JSONBuilder(json_data, factory=style_factory)
-        root = builder.build()
-        print(json.dumps(root.to_json(),indent=2))  # 或者根据实际情况调用相应的展示逻辑
+def load_json(file_path):
+    with open(file_path, 'r') as file:
+        return json.load(file)
+
+def get_style(style_name):
+    if style_name == 'tree':
+        return TreeStyle()
+    elif style_name == 'rect':
+        return RectStyle()
+    else:
+        raise ValueError(f"Unknown style: {style_name}")
+
+def get_icon_family(icon_name):
+    if icon_name == 'poker':
+        return PokerIcons()
+    elif icon_name == 'other':
+        return OtherIcons()
+    else:
+        raise ValueError(f"Unknown icon family: {icon_name}")
+
+def main():
+    args = parse_arguments()
+    json_data = load_json(args.file)
+    style = get_style(args.style)
+    icon_family = get_icon_family(args.icon)
+
+    explorer = JSONExplorer(style, icon_family)
+    print(explorer.render(json_data))
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Funny JSON Explorer")
-    parser.add_argument("-f", "--file", required=True, help="Path to the JSON file")
-    parser.add_argument("-s", "--style", choices=["tree", "rectangle"], default="tree", help="Output style")
-    parser.add_argument("-i", "--icon-family", help="Icon family to use for visualization")
-
-    args = parser.parse_args()
-
-    # 根据参数选择风格工厂。这里仅做示例，实际可能需要更复杂的逻辑
-    if args.style == "tree":
-        style_factory = TreeStyleFactory()  # 假设TreeStyleFactory已定义
-    else:  # rectangle
-        style_factory = RectangleStyleFactory()  # 同样假设RectangleStyleFactory已定义
-
-    main(args.file, style_factory, args.icon_family)
+    main()
