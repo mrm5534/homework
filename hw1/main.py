@@ -1,8 +1,8 @@
 import argparse
-from explorer import JSONExplorer
-from style import Style,TreeStyle,RectStyle
+from hw1.explorer import JSONExplorer
+from style import TreeStyle,RectStyle
 import json
-from icons import IconFamily, PokerIcons, OtherIcons
+from icons import PokerIcons, OtherIcons
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Funny JSON Explorer')
     parser.add_argument('-f', '--file', type=str, required=True, help='Path to the JSON file')
